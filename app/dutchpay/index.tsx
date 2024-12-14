@@ -1,9 +1,12 @@
 import { useState } from "react";
-import { TouchableOpacity, KeyboardAvoidingView, View } from "react-native";
+import { TouchableOpacity, KeyboardAvoidingView } from "react-native";
+import { useRouter } from "expo-router";
 import styled from "styled-components/native";
+
 import { globalColor } from "@/styles/globalStyle";
 import SelectBtn from "@/components/SelectBtn";
-import { useRouter } from "expo-router";
+
+import background from "../../assets/images/background.png";
 
 export default function DutchPayPage() {
   const [people, setPeople] = useState(2); // 인원 수
@@ -67,10 +70,7 @@ export default function DutchPayPage() {
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }}>
-      <Background
-        source={require("../../assets/images/background.png")}
-        resizeMode="cover"
-      >
+      <Background source={background} resizeMode="cover">
         <Container>
           <Head />
           <TitleText style={{ color: globalColor.white }}>
@@ -132,7 +132,7 @@ export default function DutchPayPage() {
                   <SelectBtn
                     btnState={btnState[3]}
                     name="10000원"
-                    handlePress={() => handleSelectPress(1000, 3)}
+                    handlePress={() => handleSelectPress(10000, 3)}
                   />
                 </SelectContainer>
               </Category>
