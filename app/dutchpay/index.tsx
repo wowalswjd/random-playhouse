@@ -7,11 +7,13 @@ import { globalColor } from "@/styles/globalStyle";
 import SelectBtn from "@/components/SelectBtn";
 
 import background from "../../assets/images/background.png";
+import pinkbtn from "../../assets/images/pinkbtn.png";
 
 export default function DutchPayPage() {
   const [people, setPeople] = useState(2); // 인원 수
   const [price, setPrice] = useState(0); // 지불할 가격
-  const [cut, setCut] = useState(10); // 절사 금액
+  const [cut, setCut] = useState(10); // 절사 단위 선택
+  const unit = [10, 100, 1000, 10000]; // 절사 단위
   const [btnState, setBtnState] = useState([true, false, false, false]); // 버튼 상태
 
   const router = useRouter();
@@ -114,26 +116,16 @@ export default function DutchPayPage() {
               <Category>
                 <DescText>3) 절사 단위</DescText>
                 <SelectContainer>
-                  <SelectBtn
-                    btnState={btnState[0]}
-                    name="10원"
-                    handlePress={() => handleSelectPress(10, 0)}
-                  />
-                  <SelectBtn
-                    btnState={btnState[1]}
-                    name="100원"
-                    handlePress={() => handleSelectPress(100, 1)}
-                  />
-                  <SelectBtn
-                    btnState={btnState[2]}
-                    name="1000원"
-                    handlePress={() => handleSelectPress(1000, 2)}
-                  />
-                  <SelectBtn
-                    btnState={btnState[3]}
-                    name="10000원"
-                    handlePress={() => handleSelectPress(10000, 3)}
-                  />
+                  {unit.map((elem, index) => {
+                    return (
+                      <SelectBtn
+                        btnState={btnState[index]}
+                        name={elem + "원"}
+                        handlePress={() => handleSelectPress(elem, index)}
+                        key={index}
+                      />
+                    );
+                  })}
                 </SelectContainer>
               </Category>
             </InfoContainer>
@@ -142,10 +134,7 @@ export default function DutchPayPage() {
 
         <TouchableOpacity onPress={handleSubmitPress}>
           <BtnContainer>
-            <CompleteBtn
-              source={require("../../assets/images/pinkbtn.png")}
-              resizeMode="cover"
-            >
+            <CompleteBtn source={pinkbtn} resizeMode="cover">
               <BtnText style={{ marginBottom: 8 }}>입력 완료</BtnText>
             </CompleteBtn>
           </BtnContainer>
