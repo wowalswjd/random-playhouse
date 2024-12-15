@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
-import { characterArr, globalColor } from "@/styles/globalStyle";
+import { characterImageArr, globalColor } from "@/styles/globalStyle";
 import { useSearchParams } from "expo-router/build/hooks";
 
 import heart_image from "../../assets/images/dutchpay/heart.png";
@@ -99,7 +99,7 @@ export default function DutchPayResultPage() {
             {sharingArr.map((elem, index) => {
               return (
                 <InputDataContainer key={index}>
-                  <Icon source={characterArr[index]} />
+                  <Icon source={characterImageArr[index]} />
                   <SubTitleText>{elem + "원"}</SubTitleText>
                 </InputDataContainer>
               );
