@@ -1,18 +1,32 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 
 import btn_send from "../assets/images/chatgame/btn_send.png";
 import btn_send_pink from "../assets/images/chatgame/btn_send_pink.png";
 import { globalColor } from "@/styles/globalStyle";
+import { ChatType } from "@/app/chatgame";
 
-const ChatInput = () => {
+const ChatInput = ({
+  chatList,
+  setChatList,
+}: {
+  chatList: ChatType[];
+  setChatList: Dispatch<SetStateAction<ChatType[]>>;
+}) => {
   const maxChatLength = 50; // 최대 글자 수
   const [chatInput, setChatInput] = useState(""); // input 내용 state
 
   // input onChange 함수
   const handleChange = (text: string) => {
     setChatInput(text);
+  };
+
+  const handleSubmit = () => {
+    const copy = [...chatList];
+    copy.push({ role: "user", content: chatInput });
+    setChatList(copy);
+    setChatInput(""); // 채팅창 초기화
   };
 
   return (
@@ -24,13 +38,14 @@ const ChatInput = () => {
         placeholder="ex) 오늘 저녁에 치킨을 먹을까 피자를 먹을까?"
         onChangeText={handleChange}
       />
-      <TouchableOpacity>
-        {chatInput.length > 0 ? (
+
+      {chatInput.length > 0 ? (
+        <TouchableOpacity onPress={handleSubmit}>
           <SendBtn source={btn_send_pink} />
-        ) : (
-          <SendBtn source={btn_send} />
-        )}
-      </TouchableOpacity>
+        </TouchableOpacity>
+      ) : (
+        <SendBtn source={btn_send} />
+      )}
     </Wrapper>
   );
 };

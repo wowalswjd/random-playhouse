@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TouchableOpacity, KeyboardAvoidingView } from "react-native";
 import styled from "styled-components/native";
 
@@ -7,15 +7,43 @@ import { globalColor } from "@/styles/globalStyle";
 import background from "../../assets/images/chatgame/background3.png";
 import ChatInput from "@/components/ChatInput";
 import ChatScreen from "@/components/ChatScreen";
+import { callChatGPT } from "@/api/chatgpt";
+
+export type ChatType = {
+  role: string;
+  content: string;
+};
 
 export default function ChatGamePage() {
+  const [chatList, setChatList] = useState<ChatType[]>([]);
+
+  const fetchData = async () => {
+    try {
+      const res = await callChatGPT(chatList); // GPT 질문 보내기
+      const messageContent = res.data.choices[0].message.content; // GPT 답변
+
+      const copy = [...chatList];
+      copy.push({ role: "assistant", content: messageContent });
+      setChatList(copy);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (chatList.length % 2 === 1) {
+      // chatList 길이가 홀수 (즉 user가 메시지 보낸 상황이면)
+      fetchData();
+    }
+  }, [chatList.length]);
+
   return (
     <KeyboardAvoidingView style={{ flex: 1 }}>
       <Background source={background} resizeMode="cover">
-        <ChatInput />
+        <ChatInput chatList={chatList} setChatList={setChatList} />
         <Container>
           <Head />
-          <ChatScreen />
+          <ChatScreen chatList={chatList} />
         </Container>
       </Background>
     </KeyboardAvoidingView>
@@ -63,4 +91,3 @@ const Head = styled.View`
   background-color: ${globalColor.darkgrey};
   margin-bottom: 8px;
 `;
-
