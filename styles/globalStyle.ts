@@ -11,9 +11,18 @@ export const globalColor = {
   darkBeige: "#CEB4A3",
   beige: "#F5ECE6",
   white: "#FFFFFF",
+  lightPink: "#eccccc",
   pink: "#D18888",
+  lightGreen: "#d1ece4",
 };
 
 export const characterImageArr = [cat, cow, elephant, monkey, sheep, tiger];
 
-export const characterColorArr = ["#a79b9d", "#745959", "#d2b3db", "#a5492d", "#f8ebc7", "#fa882d"];
+export const characterColorArr = [
+  "#a79b9d",
+  "#745959",
+  "#d2b3db",
+  "#a5492d",
+  "#f8ebc7",
+  "#fa882d",
+];
