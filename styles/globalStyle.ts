@@ -14,4 +14,6 @@ export const globalColor = {
   pink: "#D18888",
 };
 
-export const characterArr = [cat, cow, elephant, monkey, sheep, tiger];
+export const characterImageArr = [cat, cow, elephant, monkey, sheep, tiger];
+
+export const characterColorArr = ["#a79b9d", "#745959", "#d2b3db", "#a5492d", "#f8ebc7", "#fa882d"];
