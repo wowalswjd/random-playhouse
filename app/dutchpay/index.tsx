@@ -27,8 +27,8 @@ export default function DutchPayPage() {
   };
 
   const handlePlusPress = () => {
-    if (people >= 6) {
-      alert("최대 인원 수는 6명입니다.");
+    if (people >= 5) {
+      alert("최대 인원 수는 5명입니다.");
       return;
     }
     setPeople(people + 1);
@@ -87,7 +87,7 @@ export default function DutchPayPage() {
 
             <InfoContainer>
               <Category>
-                <DescText>1) 인원 수 (최소 2명, 최대 6명)</DescText>
+                <DescText>1) 인원 수 (최소 2명, 최대 5명)</DescText>
                 <CountContainer>
                   <RoundBtn onPress={handleMinusPress}>
                     <BtnText style={{ marginTop: -4 }}>-</BtnText>

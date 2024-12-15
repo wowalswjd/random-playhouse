@@ -21,8 +21,8 @@ export default function GhostLegIndexPage() {
   };
 
   const handlePlusPress = () => {
-    if (people >= 6) {
-      alert("최대 인원 수는 6명입니다.");
+    if (people >= 5) {
+      alert("최대 인원 수는 5명입니다.");
       return;
     }
     setPeople(people + 1);
@@ -46,7 +46,7 @@ export default function GhostLegIndexPage() {
       <Container>
         <TextContainer>
           <DescText>인원 수를 입력해주세요.</DescText>
-          <Desc2Text>(최소 2명, 최대 6명)</Desc2Text>
+          <Desc2Text>(최소 2명, 최대 5명)</Desc2Text>
         </TextContainer>
 
         <CountContainer>
