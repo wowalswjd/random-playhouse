@@ -3,7 +3,7 @@ import {
   characterImageArr,
   globalColor,
 } from "@/styles/globalStyle";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Image } from "react-native";
 import Svg, { Line, Path } from "react-native-svg";
 import styled from "styled-components/native";
@@ -11,14 +11,15 @@ import styled from "styled-components/native";
 const GhostLegSvg = ({
   cases,
   buttonPressed,
+  setGameResult
 }: {
   cases: string[];
   buttonPressed: boolean;
+  setGameResult: Dispatch<SetStateAction<number[]>>
 }) => {
   const [svgSize, setSvgSize] = useState({ width: 0, height: 0 });
   const [numPlayers, setNumPlayers] = useState(cases.length); // 기본 인원 수
   const [horizontalLines, setHorizontalLines] = useState<boolean[][]>([]); // 랜덤 수평선 데이터
-  const [gameResult, setGameResult] = useState<number[]>([]); // 각 아이콘에 맞는 case 결과
   const [gameInvertResult, setGameInvertResult] = useState<number[]>([]); // case에 맞는 아이콘 결과
 
   // 사다리 생성 함수
