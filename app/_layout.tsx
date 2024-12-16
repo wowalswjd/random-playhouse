@@ -44,6 +44,22 @@ export default function RootLayout() {
         name="dutchpay/result"
         options={{ title: "더치페이 계산기" }}
       />
+      <Stack.Screen
+        name="ghostleg/index"
+        options={{ title: "사다리타기 정보 입력" }}
+      />
+      <Stack.Screen
+        name="ghostleg/index2"
+        options={{ title: "사다리타기 정보 입력" }}
+      />
+      <Stack.Screen
+        name="ghostleg/game"
+        options={{ title: "사다리타기 게임" }}
+      />
+      <Stack.Screen
+        name="chatgame/index"
+        options={{ title: "채팅 랜덤 게임" }}
+      />
     </Stack>
   );
 }

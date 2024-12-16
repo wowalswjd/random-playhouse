@@ -1,4 +1,5 @@
-import { Text, View } from "react-native";
+import { router } from "expo-router";
+import { Button, View } from "react-native";
 
 export default function Index() {
   return (
@@ -9,7 +10,11 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <Button title="dutch-pay" onPress={() => router.navigate("/dutchpay")} />
+      <Button title="ghost-leg" onPress={() => router.navigate("/ghostleg")} />
+      <Button title="chat-game" onPress={() => router.navigate("/chatgame")} />
+
+      {/* 앱 설명 페이지 */}
     </View>
   );
 }
