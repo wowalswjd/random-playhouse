@@ -8,11 +8,18 @@ import { Image } from "react-native";
 import Svg, { Line, Path } from "react-native-svg";
 import styled from "styled-components/native";
 
-const GhostLegSvg = ({ cases }: { cases: string[] }) => {
+const GhostLegSvg = ({
+  cases,
+  buttonPressed,
+}: {
+  cases: string[];
+  buttonPressed: boolean;
+}) => {
   const [svgSize, setSvgSize] = useState({ width: 0, height: 0 });
   const [numPlayers, setNumPlayers] = useState(cases.length); // 기본 인원 수
   const [horizontalLines, setHorizontalLines] = useState<boolean[][]>([]); // 랜덤 수평선 데이터
-  const [paths, setPaths] = useState<{ color: string; path: string }[]>([]);
+  const [gameResult, setGameResult] = useState<number[]>([]); // 각 아이콘에 맞는 case 결과
+  const [gameInvertResult, setGameInvertResult] = useState<number[]>([]); // case에 맞는 아이콘 결과
 
   // 사다리 생성 함수
   const generateLadder = () => {
@@ -70,9 +77,59 @@ const GhostLegSvg = ({ cases }: { cases: string[] }) => {
     return path.join(" ");
   };
 
+  const calculateResult = () => {
+    const results = [];
+
+    for (let startIndex = 0; startIndex < numPlayers; startIndex++) {
+      let currentX = startIndex;
+
+      for (let level = 0; level < horizontalLines.length; level++) {
+        // 왼쪽 이동
+        if (currentX > 0 && horizontalLines[level][currentX - 1]) {
+          currentX -= 1;
+        }
+        // 오른쪽 이동
+        else if (
+          currentX < numPlayers - 1 &&
+          horizontalLines[level][currentX]
+        ) {
+          currentX += 1;
+        }
+      }
+
+      results.push(currentX); // 마지막 x좌표 저장
+      console.log(`Final position for ${startIndex}: ${currentX}`);
+    }
+
+    console.log("Final Results:", results); // 마지막 결과
+    return results;
+  };
+
+  // 결과 역추적 함수 (case 기준 결과)
+  const invertResult = (results: number[]) => {
+    const inverted = Array(results.length).fill(-1);
+
+    results.forEach((iconIndex, caseIndex) => {
+      inverted[iconIndex] = caseIndex; // 아이콘 인덱스 기준으로 도착한 case 저장
+    });
+
+    console.log("Inverted Results:", inverted);
+    return inverted;
+  };
+
   useEffect(() => {
     generateLadder();
   }, []);
+
+  useEffect(() => {
+    if (horizontalLines.length > 0 && buttonPressed) {
+      const results = calculateResult();
+      console.log("최종 결과:", results);
+      setGameResult(results); // 게임 결과 저장 (아이콘 기준)
+      setGameInvertResult(invertResult(results)); // 게임 결과 저장 (case 기준)
+      console.log("invert", gameInvertResult);
+    }
+  }, [horizontalLines, buttonPressed]);
 
   return (
     <SvgContainer
@@ -125,15 +182,16 @@ const GhostLegSvg = ({ cases }: { cases: string[] }) => {
       )}
 
       {/* 경로 그리기 */}
-      {Array.from({ length: numPlayers }).map((_, index) => (
-        <Path
-          key={`path-${index}`}
-          d={tracePath(index)}
-          stroke={characterColorArr[index]} // 각 경로에 다른 색상 적용
-          strokeWidth={2}
-          fill="none"
-        />
-      ))}
+      {buttonPressed &&
+        Array.from({ length: numPlayers }).map((_, index) => (
+          <Path
+            key={`path-${index}`}
+            d={tracePath(index)}
+            stroke={characterColorArr[index]} // 각 경로에 다른 색상 적용
+            strokeWidth={2}
+            fill="none"
+          />
+        ))}
 
       {/** 아이콘 추가 */}
       {Array.from({ length: numPlayers }).map((_, index) => {
@@ -155,6 +213,27 @@ const GhostLegSvg = ({ cases }: { cases: string[] }) => {
           />
         );
       })}
+
+      {/** case 추가 */}
+      {Array.from({ length: numPlayers }).map((_, index) => {
+        const gap = svgSize.width / (numPlayers - 1);
+        const iconSize = 40; // case 크기
+
+        return (
+          <CaseWrapper
+            key={`case-${index}`}
+            style={{
+              position: "absolute",
+              left: index * gap - iconSize / 2, // case를 수직선 중심에 배치
+              top: svgSize.height, // 맨 아래에 배치
+            }}
+            buttonPressed={buttonPressed}
+            caseColor={characterColorArr[gameInvertResult[index]]}
+          >
+            <CaseText>{cases[index]}</CaseText>
+          </CaseWrapper>
+        );
+      })}
     </SvgContainer>
   );
 };
@@ -165,4 +244,23 @@ const SvgContainer = styled(Svg)`
   /* background-color: pink; */
   margin-top: 25%;
   padding: 16px;
+`;
+
+const CaseWrapper = styled.View<{ buttonPressed: boolean; caseColor: string }>`
+  box-sizing: border-box;
+  max-width: 140px;
+  padding: 4px;
+
+  border-width: 2px;
+  border-color: ${(props) =>
+    props.buttonPressed ? props.caseColor : globalColor.darkBeige};
+  border-radius: 8px;
+
+  background-color: ${globalColor.white};
+`;
+
+const CaseText = styled.Text`
+  font-family: "COOKIERUN-BOLD";
+  font-size: 12px;
+  color: ${globalColor.darkBeige};
 `;

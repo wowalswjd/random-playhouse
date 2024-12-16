@@ -15,18 +15,28 @@ export default function GhostLegGamePage() {
   const search = useSearchParams();
   const cases = search.get("case")?.split(","); // 두 번째 입력 페이지의 case 배열
 
+  const [buttonPressed, setButtonPressed] = useState(false);
+
+  const handlePress = () => {
+    setButtonPressed(true);
+  };
+
   return (
     <Background source={background} resizeMode="cover">
       <Roof source={roof} resizeMode="contain" />
-      <Container>{cases && <GhostLegSvg cases={cases} />}</Container>
-      
-      <TouchableOpacity>
-        <BtnContainer>
-          <CompleteBtn source={pinkbtn} resizeMode="cover">
-            <BtnText style={{ marginBottom: 8 }}>다음으로</BtnText>
-          </CompleteBtn>
-        </BtnContainer>
-      </TouchableOpacity>
+      <Container>
+        {cases && <GhostLegSvg cases={cases} buttonPressed={buttonPressed} />}
+      </Container>
+
+      {!buttonPressed && (
+        <TouchableOpacity onPress={handlePress}>
+          <BtnContainer>
+            <CompleteBtn source={pinkbtn} resizeMode="cover">
+              <BtnText style={{ marginBottom: 8 }}>시작하기</BtnText>
+            </CompleteBtn>
+          </BtnContainer>
+        </TouchableOpacity>
+      )}
     </Background>
   );
 }
