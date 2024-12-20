@@ -11,11 +11,11 @@ import styled from "styled-components/native";
 const GhostLegSvg = ({
   cases,
   buttonPressed,
-  setGameResult
+  setGameResult,
 }: {
   cases: string[];
   buttonPressed: boolean;
-  setGameResult: Dispatch<SetStateAction<number[]>>
+  setGameResult: Dispatch<SetStateAction<number[]>>;
 }) => {
   const [svgSize, setSvgSize] = useState({ width: 0, height: 0 });
   const [numPlayers, setNumPlayers] = useState(cases.length); // 기본 인원 수
@@ -31,12 +31,21 @@ const GhostLegSvg = ({
       // 마지막 레벨에는 선 긋지 않기
       const horizontal: boolean[] = [];
       for (let j = 0; j < numPlayers - 1; j++) {
-        // 이전 수평선의 값을 확인하여 중복 방지
+        // 이전 수평선의 값을 확인하여 인접한 수평선이 같은 레벨로 그려지지 않도록
         const hasLeftLine: boolean = j > 0 ? horizontal[j - 1] : false; // 이전 수직선 확인
         horizontal.push(!hasLeftLine && Math.random() > 0.5); // 겹치지 않게 수평선 생성
       }
+
+      // 현재 레벨의 수평선을 생성한 뒤 필수 수평선 추가
+      if (!horizontal.some((hasLine) => hasLine)) {
+        // 모든 구간에 수평선이 없는 경우, 임의로 하나 추가
+        const randomIndex = Math.floor(Math.random() * (numPlayers - 1));
+        horizontal[randomIndex] = true;
+      }
+
       lines.push(horizontal);
     }
+
     setHorizontalLines(lines);
   };
 
